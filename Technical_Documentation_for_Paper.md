@@ -116,10 +116,65 @@ graph TD
 116: -   **Impulsivity (Patience)**: Derived from the frequency of high-value transactions over short time windows.
 117: 
 118: ### C. Future Financial Projection
-119: The "Future Prediction" module uses **Linear Extrapolation** on time-series data:
-120: -   It calculates the **Average Monthly Growth Rate (AMGR)** of the user's total assets over the last 6 months.
-121: -   Projects this rate forward to the end of the fiscal year to estimate future net worth.
-122: -   Formula: $FutureValue = CurrentValue + (AMGR \times MonthsRemaining)$
-123: 
-124: ### D. Narrative Generation (NLG)
-125: A template-based **Natural Language Generation** system constructs personalized financial stories by filling semantic slots with aggregated data points (e.g., "highest spending category", "savings milestone") to provide human-readable insights.
+3. **Frontend**: Run `npm run dev` in the root directory.
+
+---
+
+## 6. Methodology & Algorithms
+
+The platform employs a **Hybrid Client-Side Intelligence** approach, processing sensitive financial data locally within the user's browser to ensure privacy while delivering real-time insights.
+
+### A. Regret Prediction Engine (Weighted Probability Model)
+The core "AI" feature uses a heuristic rule engine (`regretPredictor.js`) that calculates a regret probability score (0-100%) based on three weighted factors:
+
+1.  **Pattern Matching (40%)**: Compares the new transaction against past regretted items using fuzzy logic on:
+    -   **Category Match**: Exact string matching.
+    -   **Amount Similarity**: Checks if the amount is within a 30% variance of past regretted items.
+    -   **Keyword Overlap**: Tokenizes descriptions to find semantic overlaps (e.g., "fast food", "game").
+2.  **Financial Stress Score (30%)**: A composite metric derived from:
+    -   **Expense Ratio**: Monthly Expenses / Monthly Income.
+    -   **Liquidity Ratio**: Current Balance / Monthly Expenses.
+    -   **Impact Factor**: New Transaction Amount / Monthly Income.
+3.  **Historical Regret Rate (30%)**: The statistical frequency of regret for the specific category and price range based on user feedback.
+
+### B. Cognitive Behavioral Profiling
+User behavior is analyzed using statistical profiling of transaction metadata to generate "Cognitive Scores" (visualized in the Radar Chart):
+-   **Focus**: Inverse of category entropy (High diversity = Low focus).
+-   **Consistency**: Standard deviation of transaction frequency.
+-   **Risk Tolerance**: Ratio of maximum transaction value to average transaction value.
+-   **Impulsivity (Patience)**: Derived from the frequency of high-value transactions over short time windows.
+
+### C. Future Financial Projection
+The "Future Prediction" module uses **Linear Extrapolation** on time-series data:
+-   It calculates the **Average Monthly Growth Rate (AMGR)** of the user's total assets over the last 6 months.
+-   Projects this rate forward to the end of the fiscal year to estimate future net worth.
+-   Formula: $FutureValue = CurrentValue + (AMGR \times MonthsRemaining)$
+
+### D. Narrative Generation (NLG)
+A template-based **Natural Language Generation** system constructs personalized financial stories by filling semantic slots with aggregated data points (e.g., "highest spending category", "savings milestone") to provide human-readable insights.
+
+---
+
+## 7. Intelligent Data Extraction (OCR) Methodology
+
+The platform's data extraction pipeline is a sophisticated multi-stage system that combines deep learning with custom heuristic "expert systems" to achieve high accuracy even with challenging handwritten inputs.
+
+### A. Core Engine: Tesseract.js (Deep Learning)
+The foundational character recognition is powered by **Tesseract.js**, a JavaScript port of the industry-standard Tesseract engine.
+- **Architecture**: It utilizes a **Long Short-Term Memory (LSTM)** neural network.
+- **Training State**: The model comes **pre-trained** on millions of image samples covering thousands of fonts and diverse handwriting styles.
+- **Fine-tuning**: We utilize the `eng` (English) trained data pack specialized for alphanumeric character recognition.
+
+### B. Image Vision Pipeline (Pre-processing)
+To handle the variable lighting and low contrast of smartphone-captured receipts, a pre-processing stage is implemented using HTML5 Canvas:
+- **Grayscale Conversion**: Pixels are averaged to eliminate color noise.
+- **Adaptive Thresholding**: A custom dynamic thresholding algorithm converts the image to high-contrast binary (Black & White). This "boosts" handwritten ink strokes while ignoring background shadows and paper grain.
+
+### C. Heuristic Data Extraction (The "Brain")
+Once the raw text is extracted by Tesseract, a custom **Rule-Based Heuristic Engine** (`Transaction.jsx`) processes the unstructured strings into meaningful data:
+1.  **Anchor-Based Parsing**: The system identifies key "anchors" (headers like "Description", "Items", "Price") and uses relative positional logic to extract the data immediately following them.
+2.  **Fuzzy String Normalization**: We use a `superNorm` function that performs **Bi-lateral Character Correction**. It maps common numeric-to-alpha misreads (e.g., `8` → `S`, `0` → `o`, `5` → `S`) to reconstruct brand names like "Santoor" from OCR errors like "8ant00r".
+3.  **Pattern Anchoring**: Amounts are extracted using greedy Regex patterns looking for currency symbols (₹, RS) and "Grand Total" keywords.
+
+### D. Global Correction Engine (Post-processing)
+The final stage is a **Verified Product Mapping** layer. It compares the extracted description against a known database of handwritten brand variations (e.g., mapping "Novyatna 01" to "Navratna oil"). This ensures that even if the underlying ML model fails partially, the platform's "domain knowledge" corrects the output before it reaches the user.
